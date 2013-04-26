@@ -45,6 +45,8 @@ public class FischerYatesShuffle {
 			int rand = (int) (Math.random() * (elements.size()-i));
 
 			Object temp = elements.get(i);
+			
+			elements.set(i, temp);
 	        
 			elements.set(i,elements.get(rand));
 
