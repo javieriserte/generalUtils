@@ -57,7 +57,7 @@ public class XmlToTable {
 		
 		saxParser = factory.newSAXParser();
 		
-		SimpleHandle handler = new SimpleHandle(out);
+		SimpleHandler handler = new SimpleHandler(out);
 		
 	    saxParser.parse(in, handler);
 		
@@ -76,7 +76,7 @@ public class XmlToTable {
     	 
 }
 
-class SimpleHandle extends DefaultHandler {
+class SimpleHandler extends DefaultHandler {
   	 
 	boolean newElement = false;
 	boolean addedchars = false;
@@ -86,7 +86,7 @@ class SimpleHandle extends DefaultHandler {
 	
 	Stack<String> currentElements = new Stack<String>(); 
 	 
-	public SimpleHandle(PrintStream out) {
+	public SimpleHandler(PrintStream out) {
 		
 		this.out = out;
 		
@@ -94,11 +94,22 @@ class SimpleHandle extends DefaultHandler {
 
 	public void startElement(String uri, String localName,String qName, Attributes attributes) throws SAXException {
 
-		String qNameUpper = qName.toUpperCase().trim().replaceAll("\t", "");
+		StringBuilder elem = new StringBuilder();
 		
-		if (!qNameUpper.equals("")) {
+		elem.append(qName.toUpperCase().trim().replaceAll("\t", ""));
+		
+		
+		if (!elem.equals("")) {
+
+			int nAtt = attributes.getLength();
 			
-			currentElements.push("["+qNameUpper+"]");
+			for (int i=0; i< nAtt; i++) {
+
+				elem.append('|' + attributes.getQName(i) + ':' + attributes.getValue(i));
+				
+			}
+			
+			currentElements.push("["+elem+"]");
 			
 			newElement = true;
 			
