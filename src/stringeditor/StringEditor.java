@@ -1,5 +1,7 @@
 package stringeditor;
 
+import java.io.IOException;
+
 import stringeditor.functions.alignstring;
 
 /**
@@ -95,8 +97,23 @@ public class StringEditor {
 	public static void main(String[] arg ) {
 		
 		StringEditor se = new StringEditor();
+
+		StringBuilder wholeText = new StringBuilder();
 		
-		se.setCurrentString("F1#f2#f3\nAA1#aa2#sdfaa3");
+		int c = -1;
+		
+		try {
+			while ((c = System.in.read())!=-1) {
+				
+				wholeText.append(Character.toChars(c));
+				
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		se.setCurrentString(wholeText.toString());
 		
 		System.out.println(se.alignWithCharacter('#'));
 		
