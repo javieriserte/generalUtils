@@ -34,17 +34,18 @@ public class FischerYatesShuffle {
 	
 	/**
 	 * Performs the shuffling
+	 * @param <T>
 	 * 
 	 * @param elementsShuffled the number of elements to be shuffled.
 	 * @param elements the objects to be shuffled
 	 */
-	public static void shuffle(int elementsShuffled ,List<Object> elements) {
+	public static <T> void shuffle(int elementsShuffled ,List<T> elements) {
 		
 		for(int i=0; i<elementsShuffled; i++) {
 	        
 			int rand = (int) (Math.random() * (elements.size()-i));
 
-			Object temp = elements.get(i);
+			T temp = elements.get(i);
 			
 			elements.set(i, temp);
 	        
