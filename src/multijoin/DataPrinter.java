@@ -9,16 +9,14 @@ public abstract class DataPrinter {
 	private PrintStream out;
 	private boolean showGuide = false;
 	private String sep;
+	private String osep;
 	private Map<String,List<String>> data;
 
 	///////////////////////////////////
 	// Constructor
-	
-	public DataPrinter(PrintStream out, String sep, Map<String,List<String>> data) {
+
+	public DataPrinter() {
 		super();
-		this.out = out;
-		this.sep = sep;
-		this.data = data;
 	}
 	
 	//////////////////////////////////////
@@ -47,15 +45,38 @@ public abstract class DataPrinter {
 		return this.data;
 		
 	}
+	public String getOsep() {
+		return osep;
+	}
+
+	public void setOsep(String osep) {
+		this.osep = osep;
+	}
+
 	
 	///////////////////////////////////////
 	// Public Interface
 	
+	public void initialize(PrintStream out, String sep, String osep, Map<String, List<String>> data, boolean showGuide) {
+		this.out = out;
+		this.sep = sep;
+		this.setOsep(osep);
+		this.data = data;
+		this.showGuide = showGuide;
+	}
+
+
 	public void printData(List<String> guide) {
 	
 		for (String string : guide) {
 			
-			this.getPrintStream().println(this.getDataLine(string));
+			String dataLine = this.getDataLine(string);
+			
+			if (dataLine!=null) {
+			
+				this.getPrintStream().println(dataLine);
+			
+			}
 			
 		}
 		
@@ -65,6 +86,7 @@ public abstract class DataPrinter {
 	// Private Methods
 	
 	protected abstract String getDataLine(String string);
+
 
 
 

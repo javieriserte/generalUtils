@@ -3,6 +3,7 @@ package multijoin;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -21,12 +22,10 @@ import cmdGA.parameterType.StringParameter;
 
 public class MultiJoin {
 
-	private Map<String,List<String>> data;
-	
-	private List<String> guide;
-	
 	/**
-	 * @param args
+	 * MultiJoin is an extension of Join command from GNU-Utils. 
+	 * Instead of join only two files, MultiJoin permits join many files at once. 
+	 * 
 	 */
 	public static void main(String[] args) {
 		
@@ -36,15 +35,17 @@ public class MultiJoin {
 		
 		MultipleOption filesOpt = new MultipleOption(parser, null, "-f", ',', InFileParameter.getParameter());
 		
-		SingleOption outOpt = new SingleOption(parser, null, "-o", PrintStreamParameter.getParameter());
+		SingleOption outOpt = new SingleOption(parser, System.out, "-o", PrintStreamParameter.getParameter());
 		
-		NoOption prettyPrintOpt = new NoOption(parser, "-pp");
+		SingleOption dataPrinterOpt = new SingleOption(parser, new CommonDataPrinter(), "-p", DataPrinterParameter.getParameter());
 		
-		NoOption exportGuideOpt = new NoOption(parser, "-eg");
+		NoOption exportGuideOpt = new NoOption(parser, "-e");
+
+		SingleOption osepCharOpt = new SingleOption(parser, null, "-os", StringParameter.getParameter());
 		
 		SingleOption sepCharOpt = new SingleOption(parser, "\t", "-s", StringParameter.getParameter());
 		
-		NoOption helpOpt = new NoOption(parser, "-help");
+		NoOption helpOpt = new NoOption(parser, "-h");
 
 		try {
 			
@@ -53,14 +54,18 @@ public class MultiJoin {
 		} catch (IncorrectParameterTypeException e) {
 			
 			System.err.println("There was an error parding the command line: \n" + e.getMessage());
-			
+			 
 			System.exit(1);
 			
 		}
 		
-		if (helpOpt.isPresent()) {
+		PrintStream out = (PrintStream) outOpt.getValue();
+		
+		boolean showHelp = helpOpt.isPresent();
+		
+		if (showHelp) {
 			
-			
+			showHelp(out);
 			
 			System.exit(1);
 			
@@ -76,38 +81,58 @@ public class MultiJoin {
 		
 		File guideFile = (File) guideOpt.getValue();
 		
-		if (guideFile!=null) {
+		if (guideFile==null) {
 			
-			System.err.println("Guide file can not be opened\n");
+			System.err.println("Guide file can not be opened");
 			
 			System.exit(1);
 			
 		}
 		
-		String sep = (String) sepCharOpt.getValue();
+		String sep = EscapeChars.escape((String) sepCharOpt.getValue());
 		
-		MultiJoin mj = new MultiJoin();
+		String osep = EscapeChars.escape((String) osepCharOpt.getValue());
 		
-		mj.setGuide(MultiJoin.parseGuideFile(guideFile));
+		if (osep==null) osep = sep;
 		
-		PrintStream out = (PrintStream) outOpt.getValue();
-		
-		boolean exportGuide = exportGuideOpt.isPresent();
-		
-		boolean prettyPrint = prettyPrintOpt.isPresent();
+		List<String> guide = null;
 		
 		try {
 			
-			mj.setData(MultiJoin.parseDataFile(filesOpt, sep));
+			 guide = MultiJoin.parseGuideFile(guideFile);
+			
+		} catch (IOException e) {
+
+			System.err.println("There was an error with guide file:" + e.getMessage());
+			
+			System.exit(1);
+			
+		}
+		
+
+		boolean exportGuide = exportGuideOpt.isPresent();
+		
+		DataPrinter prettyPrint = (DataPrinter) dataPrinterOpt.getValue();
+		
+		Map<String, List<String>> data = null;
+		
+		try {
+			
+			data = MultiJoin.parseDataFile(filesOpt, sep);
 			
 		} catch (Exception e) {
 			
-			System.err.println("Data File can be opened");
+			System.err.println("Data File can be opened: " + e.getMessage());
 			
 			System.exit(1);
 
 		}
-
+		
+		prettyPrint.initialize(out, sep, osep, data, exportGuide);
+		
+		prettyPrint.printData(guide);
+		
+		
 	}
 	
 	private static Map<String, List<String>> parseDataFile(MultipleOption filesOpt, String sep) throws Exception {
@@ -134,7 +159,7 @@ public class MultiJoin {
 				
 				String[] lineData = currentline.split(sep);
 				
-				String guideValue = lineData[0];
+				String guideValue = lineData[0].trim();
 
 				for(int k=1;k<lineData.length;k++) {
 					
@@ -161,29 +186,51 @@ public class MultiJoin {
 		return data;
 		
 	}
-
-	private static List<String> parseGuideFile(File guideFile) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	private static void showHelp(PrintStream out) {
+		
+		BufferedReader in = new BufferedReader( new InputStreamReader(DataPrinter.class.getResourceAsStream("helpfile")));
+		
+		String currentline = null;
+		
+		try {
+			while((currentline = in.readLine())!= null) {
+				
+				out.println(currentline);
+				
+			}
+		} catch (IOException e) {
+			
+			System.err.println("There was a problem printing the help:" + e.getMessage());
+			
+		}
+		
 	}
 
-	///////////////////////////////////////////
-	// Getters and Setters
-
-	public Map<String, List<String>> getData() {
-		return data;
-	}
-
-	public void setData(Map<String, List<String>> data) {
-		this.data = data;
-	}
-
-	public List<String> getGuide() {
-		return guide;
-	}
-
-	public void setGuide(List<String> guide) {
-		this.guide = guide;
+	private static List<String> parseGuideFile(File guideFile) throws IOException {
+		
+		BufferedReader in = new BufferedReader(new FileReader(guideFile));
+		
+		String currentline = null;
+		
+		List<String> results = new ArrayList<String>();
+		
+		while((currentline=in.readLine())!=null) {
+			
+			String trim = currentline.trim();
+			
+			if (!trim.equals("")) {
+			
+				results.add(trim);
+				
+			}
+			
+		}
+		
+		in.close();
+		
+		return results;
+		
 	}
 
 }

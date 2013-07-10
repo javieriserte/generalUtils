@@ -1,0 +1,22 @@
+MultiJoin ver 0.0.1
+
+Description:
+  Concatenate column data in different files according to a guide file.
+
+Usage: 
+  Multijoin.jar -g (guide file) -f (data file 1, data file 2,...) [other options]
+
+Options:
+  -g           Guide file.
+  -f           Data files, each file must be separated by a comma(',') symbol
+  -p arg       Printing option: 
+                 arg = 'c' for common output, values are separated 
+                   by a given char (set by -s option).
+                 arg = 'p' for pretty option, values are equallu spaced in each row.
+  -s arg       Input fields separating char. Arg is the char to separate each input field.
+                 By default this char is Tab.
+  -h           Show this help.
+  -e           Exports guide in result. By Default is not shown.
+  -o           Output file. If ommited the results is printed in standard output.
+  -os          Output field separating char. By default is the same that input field
+                 Separating.

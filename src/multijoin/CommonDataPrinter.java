@@ -1,16 +1,9 @@
 package multijoin;
 
-import java.io.PrintStream;
 import java.util.List;
 import java.util.Map;
 
 public class CommonDataPrinter extends DataPrinter {
-
-	////////////////////////////////////////
-	// Constructor
-	public CommonDataPrinter(PrintStream out, String sep, Map<String,List<String>> data) {
-		super(out,sep, data);
-	}
 
 	////////////////////////////////////////
 	// Private Methods
@@ -29,22 +22,29 @@ public class CommonDataPrinter extends DataPrinter {
 			
 		}
 		
-		for (String element : this.getData().get(string)) {
-			
-			if (!first) {
+		Map<String, List<String>> data = this.getData();
+		
+		List<String> list = data.get(string);
+		
+		if (list!=null) {
+		
+			for (String element : list) {
 				
-				bs.append(this.getSep());
+				if (!first) {
+					
+					bs.append(this.getOsep());
+					
+				} else {
+					
+					first = false;
+					
+				}
 				
-			} else {
-				
-				first = false;
+				bs.append(element);
 				
 			}
-			
-			bs.append(element);
-			
-		}
 		
+		}
 		return bs.toString();
 		
 	}
