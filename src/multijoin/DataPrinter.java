@@ -4,6 +4,15 @@ import java.io.PrintStream;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Prints out data in a table-like fashion.
+ * This class gives the general behaviour, 
+ * and is expected that user extends its own 
+ * particular class. 
+ * 
+ * @author javier
+ *
+ */
 public abstract class DataPrinter {
 
 	private PrintStream out;
@@ -67,7 +76,17 @@ public abstract class DataPrinter {
 
 
 	public void printData(List<String> guide) {
-	
+
+		String header = this.getHeader();
+		
+		String footer = this.getFooter();
+		
+		if (header!=null) {
+			
+			this.getPrintStream().println(header);
+			
+		}
+		
 		for (String string : guide) {
 			
 			String dataLine = this.getDataLine(string);
@@ -80,14 +99,31 @@ public abstract class DataPrinter {
 			
 		}
 		
+		if (footer!= null) {
+			
+			this.getPrintStream().println(footer);
+			
+		}
+		
+		
 	}
 
 	////////////////////////////////////////
-	// Private Methods
+	// protected Methods
 	
 	protected abstract String getDataLine(String string);
 
-
+	protected String getHeader() {
+		
+		return null;
+		
+	}
+	
+	protected String getFooter() {
+		
+		return null;
+		
+	}
 
 
 }

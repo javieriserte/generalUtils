@@ -91,9 +91,16 @@ public class MultiJoin {
 		
 		String sep = EscapeChars.escape((String) sepCharOpt.getValue());
 		
-		String osep = EscapeChars.escape((String) osepCharOpt.getValue());
+		String osep =  (String)osepCharOpt.getValue();
 		
-		if (osep==null) osep = sep;
+		if (osep==null) {
+			
+			osep = sep;
+			
+		} else{
+			
+			osep = EscapeChars.escape(osep);
+		}
 		
 		List<String> guide = null;
 		
