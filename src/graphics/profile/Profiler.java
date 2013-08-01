@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 public class Profiler {
 	
-	public BufferedImage draw(double[] data, int imageWidth, int imageHeight, int maxPlottedData, int minPlottedData) {
+	public BufferedImage draw(double[] data, int imageWidth, int imageHeight, double maxPlottedData, double minPlottedData) {
 		
 		BufferedImage bi = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
 		
