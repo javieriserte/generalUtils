@@ -14,7 +14,7 @@ public class Profiler {
 		
 		g.setColor(Color.white);
 		
-		g.drawRect(0, 0, imageWidth, imageHeight);
+		g.fillRect(0, 0, imageWidth, imageHeight);
 
 		g.setColor(Color.black);
 		
@@ -24,10 +24,12 @@ public class Profiler {
 			
 			int x2 = (int) Math.rint(i * imageWidth / data.length);
 			
-			int y1 = (int) Math.rint((data[i-1] -minPlottedData) / maxPlottedData * imageHeight );
+			int y1 = (int) Math.rint((data[i-1] - minPlottedData) / (maxPlottedData- minPlottedData) * imageHeight );
 			
-			int y2 = (int) Math.rint((data[i] -minPlottedData) / maxPlottedData * imageHeight );
+			int y2 = (int) Math.rint((data[i] - minPlottedData) / (maxPlottedData- minPlottedData) * imageHeight );
 
+			System.err.println("drawing line from X: "+x1+ " , Y: "+y1+" to X: " + x2 + " , Y: " + y2);
+			
 			g.drawLine(x1, y1, x2, y2);
 			
 		}
