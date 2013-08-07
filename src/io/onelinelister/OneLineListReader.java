@@ -62,7 +62,7 @@ public class OneLineListReader<T> {
 			
 		}
 		
-		return null;
+		return result;
 		
 	}
 
