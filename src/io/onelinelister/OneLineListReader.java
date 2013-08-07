@@ -38,12 +38,20 @@ public class OneLineListReader<T> {
 			
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			
-			this.read(br);
+			return this.read(br);
 			
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			
+			System.err.println("There was an error trying to read input file: "+e.getMessage());
+			
+			System.exit(1);
+			
 		} catch (IOException e) {
-			e.printStackTrace();
+			
+			System.err.println("There was an error trying to read input file: "+e.getMessage());
+			
+			System.exit(1);
+			
 		}
 		
 		return null;
