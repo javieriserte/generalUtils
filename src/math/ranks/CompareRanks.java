@@ -5,29 +5,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import cmdGA.NoOption;
 import cmdGA.Parser;
 import cmdGA.SingleOption;
 import cmdGA.exceptions.IncorrectParameterTypeException;
 import cmdGA.parameterType.InFileParameter;
+import cmdGA.parameterType.PrintStreamParameter;
 
 public class CompareRanks {
-
-	public static int compare(Map<Integer,Integer> rank1, Map<Integer,Integer> rank2) {
-		
-		int sumDiff = 0;
-		
-		for (Integer label : rank1.keySet()) {
-			
-			sumDiff = Math.abs(rank1.get(label) - rank2.get(label)); 
-			
-		} 		
-		
-		return sumDiff;
-	
-	}
 	
 	public static void main(String[] arg) throws IncorrectParameterTypeException {
 		
@@ -38,8 +27,24 @@ public class CompareRanks {
 		
 		SingleOption rank2fileOpt = new SingleOption(parser, null, "-rank2", InFileParameter.getParameter());
 		
+		SingleOption outOpt = new SingleOption(parser, System.out, "-outfile", PrintStreamParameter.getParameter());
+		
+		NoOption srccOpt = new NoOption(parser, "-Spearman");
+		
 		parser.parseEx(arg);
 		
+		RankingComparator rc = null;
+		
+		if (srccOpt.isPresent()) {
+			
+			rc = new SpearmanCorrelation();
+			
+		} else {
+			
+			rc = new DifferenceCorrelation();
+		}
+		
+		PrintStream out = (PrintStream) outOpt.getValue();
 		
 		if ( rank1fileOpt.isPresent() && rank2fileOpt.isPresent()) {
 			
@@ -51,7 +56,7 @@ public class CompareRanks {
 			
 			Map<Integer,Integer> rank2 = readRank(r2file);
 
-			System.out.println(CompareRanks.compare(rank1, rank2));
+			out.println(rc.compare(rank1, rank2));
 			
 		} else {
 			
