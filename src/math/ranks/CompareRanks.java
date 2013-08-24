@@ -31,6 +31,8 @@ public class CompareRanks {
 		
 		NoOption srccOpt = new NoOption(parser, "-Spearman");
 		
+		NoOption pearOpt = new NoOption(parser, "-Pearson");
+		
 		parser.parseEx(arg);
 		
 		RankingComparator rc = null;
@@ -39,9 +41,15 @@ public class CompareRanks {
 			
 			rc = new SpearmanCorrelation();
 			
-		} else {
+		} else 
+		if (pearOpt.isPresent()) {
+			
+			rc = new PearsonComparator();
+			
+		} else{
 			
 			rc = new DifferenceCorrelation();
+			
 		}
 		
 		PrintStream out = (PrintStream) outOpt.getValue();
