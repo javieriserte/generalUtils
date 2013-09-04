@@ -11,12 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 import io.onelinelister.OneLineListReader;
-import cmdGA.Parser;
-import cmdGA.SingleOption;
-import cmdGA.exceptions.IncorrectParameterTypeException;
-import cmdGA.parameterType.InFileParameter;
-import cmdGA.parameterType.InputStreamParameter;
-import cmdGA.parameterType.PrintStreamParameter;
+import cmdGA2.CommandLine;
+import cmdGA2.NoArgumentOption;
+import cmdGA2.OptionsFactory;
+import cmdGA2.SingleArgumentOption;
+import cmdGA2.returnvalues.InfileValue;
 
 
 /**
@@ -36,66 +35,68 @@ public class ReMap {
 		
 		/////////////////////////////
 		// Create Command line Parser
-		Parser parser = new Parser();
+		
+		CommandLine cmdline = new CommandLine();
+//		Parser parser = new Parser();
 		
 		/////////////////////////////
 		// Add command line options
-		SingleOption inOpt = new SingleOption(parser, System.in, "-infile", InputStreamParameter.getParameter());
+//		SingleOption inOpt = new SingleOption(parser, System.in, "-infile", InputStreamParameter.getParameter());
+		SingleArgumentOption<InputStream> inOpt = OptionsFactory.createBasicInputStreamArgument(cmdline);
+
+//		SingleOption outOpt = new SingleOption(parser, System.out, "-outfile", PrintStreamParameter.getParameter());
+		SingleArgumentOption<PrintStream> outOpt = OptionsFactory.createBasicPrintStreamArgument(cmdline);
 		
-		SingleOption outOpt = new SingleOption(parser, System.out, "-outfile", PrintStreamParameter.getParameter());
+		SingleArgumentOption<File> mapOpt = new SingleArgumentOption<File>(cmdline, "-map", new InfileValue(), null);
+//		SingleOption mapOpt = new SingleOption(parser, null, "-map", InFileParameter.getParameter());
 		
-		SingleOption mapOpt = new SingleOption(parser, null, "-map", InFileParameter.getParameter());
+		NoArgumentOption invOpt     = new NoArgumentOption(cmdline, "-inverse");
 		
-		try {
+		SingleArgumentOption<String> defOpt= OptionsFactory.createBasicStringArgument(cmdline, "-def", null);
+		
+		//////////////////////
+		// Parse command line
+		cmdline.readAndExitOnError(args);
 			
-			//////////////////////
-			// Parse command line
-			parser.parseEx(args);
-			
-			if (!mapOpt.isPresent()) {
+		if (!mapOpt.isPresent()) {
 				
-				System.err.println("-map option is mandatory");
+			System.err.println("-map option is mandatory");
 				
-				System.exit(1);
-				
-			}
-			
-			//////////////////////
-			// Get values from 
-			// Command line
-			BufferedReader in = new BufferedReader(new InputStreamReader((InputStream) inOpt.getValue()));
-			
-			PrintStream out = (PrintStream) outOpt.getValue();
-			
-			File mapfile = (File) mapOpt.getValue();
-			
-			
-			//////////////////////////////////
-			// Read input values to be mapped
-			List<String> values = OneLineListReader.createOneLineListReaderForString().read(in);
-			
-			//////////////////////////////////
-			// Creates a map from a file
-			Map<String, String> map = createMap(mapfile);
-			
-			//////////////////////////////////
-			// Substitute values with the 
-			// dictionary map
-			performReplacement(out, values, map);
-			
-		} catch (IncorrectParameterTypeException e) {
-			
-			System.err.println("There was an error trying to parse the comand line: "+e.getMessage());
-			
 			System.exit(1);
-			
-		} catch (IOException e) {
-			
-			System.err.println("There was an error reading input data: "+e.getMessage());
-			
-			System.exit(1);
-			
+				
 		}
+			
+		//////////////////////
+		// Get values from 
+		// Command line
+		BufferedReader in = new BufferedReader(new InputStreamReader((InputStream) inOpt.getValue()));
+		
+		PrintStream out = (PrintStream) outOpt.getValue();
+		
+		File mapfile = (File) mapOpt.getValue();
+		
+		boolean inverse = invOpt.isPresent();
+		
+		String defaultValue = defOpt.getValue();
+		
+		//////////////////////////////////
+		// Read input values to be mapped
+		List<String> values = null;
+		try {
+			values = OneLineListReader.createOneLineListReaderForString().read(in);
+		} catch (IOException e) {
+			System.err.println("There was an error trying to read the input file.");
+			System.exit(1);
+		}
+		
+		//////////////////////////////////
+		// Creates a map from a file
+		Map<String, String> map = createMap(mapfile,inverse);
+		
+		//////////////////////////////////
+		// Substitute values with the 
+		// dictionary map
+		performReplacement(out, values, map, defaultValue);
 
 	}
 
@@ -110,7 +111,7 @@ public class ReMap {
 	 * @param mapfile
 	 * @return
 	 */
-	private static Map<String, String> createMap(File mapfile) {
+	private static Map<String, String> createMap(File mapfile, boolean inverse) {
 		
 		Map<String,String> map = new HashMap<String, String>();
 		
@@ -119,8 +120,16 @@ public class ReMap {
 		for (String string : tmpMapRep) {
 			
 			String[] data = string.split("\t");
+			
+			int index_domain = (inverse)?1:0;
+			   // If reading an inverse map, then
+			   // the first element read is the 
+			   // codomain, and the second is the 
+			   // domain.
 
-			map.put(data[0].trim(), data[1].trim());
+			int index_codomain = 1 - index_domain;
+
+			map.put(data[index_domain].trim(), data[index_codomain].trim());
 			
 		}
 		
@@ -137,7 +146,7 @@ public class ReMap {
 	 * @param values a list of input values.
 	 * @param map a key-value dictionary. 
 	 */
-	private static void performReplacement(PrintStream out, List<String> values, 	Map<String, String> map) {
+	private static void performReplacement(PrintStream out, List<String> values, 	Map<String, String> map, String defaultValue) {
 		
 		for (String string : values) {
 			
@@ -146,6 +155,10 @@ public class ReMap {
 			if (map.containsKey(string)) {
 				
 				out.println(map.get(string));
+				
+			} else if (defaultValue!=null) {
+				
+				out.println(defaultValue);
 				
 			}
 			
