@@ -14,15 +14,9 @@ public class SpearmanCorrelation extends RankingComparator {
 		
 		double d2 = sumDiffSq(rank1, rank2);
 		
-		System.err.println("d2 = "+ d2);
-		
 		double n = (double) rank1.size();
 		
-		System.err.println("n = " + n);
-		
 		double nn_1 = n*(Math.pow(n, 2)-1);
-		
-		System.err.println("n = " + nn_1);
 		
 		return 1 - (6*d2)/nn_1;
 		
