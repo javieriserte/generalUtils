@@ -12,6 +12,7 @@ import java.util.List;
  * Reads input data that is conformed by one value per line, and returns 
  * a list of values.
  * 
+ * TODO Create a similar class that extends from BufferedReader
  * @author javier
  *
  */
