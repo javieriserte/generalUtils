@@ -1,19 +1,34 @@
-Compares the order of two rankings.
+CompareRanks - Compares the order of two rankings.
 
-Usage: java -jar compareranks.jar <Options>
+   Comparison can be made by three methods:
+
+     * Spearman ranking correlation score. (default)
+     * Pearson coefficient.
+     * Absolute difference in rank positions.
+
+   Ranks are expected as a list of integer values, one value per line.
+   The order of the rank is the given by the list order. First line corresponds 
+   to the first ranking position. Integer values are used as labels to make 
+   reference with the other list. Both list must have the same number of 
+   elements and the numbers used as labels must go from 1 to the list size.
+
+Usage: 
+    java -jar compareranks.jar <Options>
 
 Options:
 	--rank1        File of the first rank to be compared.
+	
 	--rank2        File of the second rank to be compared.
+	
 	--output       Output file (standard output is used by default).
+	
 	--spearman     Spearman ranking correlation score is used to compare ranks 
 	               (default).
 	--pearson      Pearson coefficient is used to compare ranks.
+	
 	--diff         Absolute difference in ranking positions is used to compare.
 	
-Ranks are expected as a list of integer values, one value per line.
-The order of the rank is the given by the list order. First line corresponds to 
-the first ranking position. Integer values are used as labels to make reference 
-with the other list. Both list must have the same number of elements and the numbers
-used as labels must go from 1 to the list size.
+	--help         Prints this help.
+	
+
 

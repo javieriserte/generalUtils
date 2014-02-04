@@ -47,6 +47,7 @@ public class CompareRanks {
 		NoArgumentOption spearmamOpt = new NoArgumentOption(commandLine, "--spearman");
 		NoArgumentOption pearsonOpt = new NoArgumentOption(commandLine, "--pearson");
 		NoArgumentOption diffOpt = new NoArgumentOption(commandLine, "--diff");
+		NoArgumentOption helpOpt = new NoArgumentOption(commandLine, "--help");
 		
 		/////////////////////////////
 		// Parse command line
