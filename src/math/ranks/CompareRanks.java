@@ -53,11 +53,22 @@ public class CompareRanks {
 		// Parse command line
 		commandLine.readAndExitOnError(arg);
 		
+		///////////////////////////////
+		// Check if help flag is present
+		
+		if ( helpOpt.isPresent()) {
+			
+			CompareRanks.printHelp();
+			
+			System.exit(0);
+			
+		}
+		
 		/////////////////////////////
 		// Validate command line
 		if (! (rank1FileOpt.isPresent() && rank2FileOpt.isPresent())) {
 			
-			System.err.println("-rank1 and -rank2 options are mandatory.");
+			System.err.println("--rank1 and --rank2 options are mandatory.");
 			
 			System.exit(0);
 			

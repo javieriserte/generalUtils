@@ -17,18 +17,17 @@ Usage:
 
 Options:
 	--rank1        File of the first rank to be compared.
-	
+
 	--rank2        File of the second rank to be compared.
-	
+
 	--output       Output file (standard output is used by default).
-	
+
 	--spearman     Spearman ranking correlation score is used to compare ranks 
 	               (default).
-	--pearson      Pearson coefficient is used to compare ranks.
-	
-	--diff         Absolute difference in ranking positions is used to compare.
-	
-	--help         Prints this help.
-	
 
+	--pearson      Pearson coefficient is used to compare ranks.
+
+	--diff         Absolute difference in ranking positions is used to compare.
+
+	--help         Prints this help.
 
