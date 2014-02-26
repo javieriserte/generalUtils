@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +62,24 @@ public class OneLineListReader<T> {
 	}
 
 	public List<T> read(BufferedReader br) throws IOException {
+		
+		List<T> result = new ArrayList<T>();
+		
+		String currentline = null;
+		
+		while((currentline=br.readLine())!=null) {
+			
+			result.add( this.parser.parse(currentline.trim()));
+			
+		}
+		
+		return result;
+		
+	}
+	
+	public List<T> readZipped(InputStream input) throws IOException {
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(input)); 
 		
 		List<T> result = new ArrayList<T>();
 		
