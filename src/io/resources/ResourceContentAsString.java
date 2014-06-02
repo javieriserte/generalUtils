@@ -20,7 +20,7 @@ public class ResourceContentAsString {
 	 */
 	public String readContents(String resourceName) { 
 	
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.class.getResourceAsStream(resourceName)));
+		BufferedReader br = new BufferedReader(new InputStreamReader(ResourceContentAsString.class.getResourceAsStream(resourceName)));
 		
 		StringBuilder sb = new StringBuilder();
 		
