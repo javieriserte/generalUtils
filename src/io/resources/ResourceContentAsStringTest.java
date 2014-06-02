@@ -11,7 +11,7 @@ public class ResourceContentAsStringTest extends ResourceContentAsString {
 		
 		ResourceContentAsString r = new ResourceContentAsString ();
 		
-		String a = r.readContents("testresource");
+		String a = r.readContents("testresource",ResourceContentAsString.class);
 
 		a = a.trim();
 		

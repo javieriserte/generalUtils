@@ -18,9 +18,10 @@ public class ResourceContentAsString {
 	 * @param resourceName is the name of the resource to be read.
 	 * @return a String with the entire content of the resource as a String.
 	 */
-	public String readContents(String resourceName) { 
+	public String readContents(String resourceName, Class<?> c) { 
 	
-		BufferedReader br = new BufferedReader(new InputStreamReader(ResourceContentAsString.class.getResourceAsStream(resourceName)));
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(c.getResourceAsStream(resourceName)));
 		
 		StringBuilder sb = new StringBuilder();
 		
