@@ -94,6 +94,54 @@ public class StringEditor {
 		
 	}
 	
+	
+	/**
+	 * Do the same work of perl's join function.
+	 * Requires auxiliary classes: LineAppender and FirstLineAppender.
+	 * 
+	 * 
+	 * @param elements
+	 * @param delimiter
+	 * @return
+	 */
+	public static String join (Iterable<String> elements, String delimiter) {
+		
+		LineAppender l1 = new FirstLineAppender();
+		
+		StringBuilder sb = new StringBuilder();
+		
+		for (String string : elements) {
+			
+			l1 = l1.append(sb, delimiter, string);
+			
+		}
+		
+		return sb.toString();
+		
+	}
+	private static class LineAppender {
+		
+		protected LineAppender append(StringBuilder sb, String delimiter, String string) {
+			
+			sb.append(delimiter);
+			sb.append(string);
+			return this;
+		}
+		
+	}
+	
+	private static class FirstLineAppender extends  LineAppender {
+		
+		protected LineAppender append(StringBuilder sb, String delimiter, String string) {
+			
+			sb.append(string);
+			return new LineAppender();
+			
+		}
+		
+	}
+	
+	
 	public static void main(String[] arg ) {
 		
 		StringEditor se = new StringEditor();
