@@ -3,7 +3,7 @@ package validator.conditions;
 public abstract class SingleObjectCondition<T> extends Condition<T> {
 
 	@Override
-	public boolean verify(T... objects) {
+	public boolean verify(@SuppressWarnings("unchecked") T... objects) {
 		
 		if(objects.length > 0) {
 			
