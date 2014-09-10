@@ -10,7 +10,7 @@ import cmdGA2.returnvalues.ReturnValueParser;
 
 public class MapByColumnValue extends ReturnValueParser<Pair<Integer,Map<String,String>>> {
 
-	private static final String FORMAT_REGEX= "^?<index>([0-9]+)?<inverse>(i*)?<fileName>(.+)$";
+	private static final String FORMAT_REGEX= "^(?<index>[0-9]+)(?<inverse>i*):(?<fileName>.+)$";
 	@Override
 	public Pair<Integer, Map<String, String>> parse(String token) {
 		
@@ -18,9 +18,12 @@ public class MapByColumnValue extends ReturnValueParser<Pair<Integer,Map<String,
 		
 		Matcher m = p.matcher(token.trim());
 		
+		m.matches();
+		
 		Integer index = Integer.valueOf(m.group("index"));
 		
-		Boolean inverse= m.group("index").equals("i");
+		String inv = m.group("inverse");
+		Boolean inverse=(inv.equals("i"));
 		
 		File file = new File(m.group("fileName"));
 		

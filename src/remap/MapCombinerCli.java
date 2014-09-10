@@ -1,7 +1,6 @@
 package remap;
 
 import java.io.File;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.Map;
 
 import cmdGA2.CommandLine;
 import cmdGA2.MultipleArgumentOption;
-import cmdGA2.NoArgumentOption;
 import cmdGA2.OptionsFactory;
 import cmdGA2.SingleArgumentOption;
 import cmdGA2.returnvalues.InfileValue;
