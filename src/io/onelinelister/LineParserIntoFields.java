@@ -1,9 +1,9 @@
-package collections.sort;
+package io.onelinelister;
+
+import io.onelinelister.OneLineListReader.LineParser;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.onelinelister.OneLineListReader.LineParser;
 
 /**
  * LineParserIntoFields parses a String representing a line of text into a 
