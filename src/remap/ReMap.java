@@ -89,9 +89,14 @@ public class ReMap {
 			System.exit(1);
 		}
 		
+		////////////////////////////////////////////////////////////////////////
+		// Create MapReader Object
+		MapReader mapReader= new MapReader();
+		
+		
 		//////////////////////////////////
 		// Creates a map from a file
-		Map<String, String> map = createMap(mapfile,inverse);
+		Map<String, String> map = mapReader.createMap(mapfile,inverse);
 		
 		//////////////////////////////////
 		// Substitute values with the 
@@ -111,30 +116,30 @@ public class ReMap {
 	 * @param mapfile
 	 * @return
 	 */
-	private static Map<String, String> createMap(File mapfile, boolean inverse) {
-		
-		Map<String,String> map = new HashMap<String, String>();
-		
-		List<String> tmpMapRep = OneLineListReader.createOneLineListReaderForString().read(mapfile);
-
-		for (String string : tmpMapRep) {
-			
-			String[] data = string.split("\t");
-			
-			int index_domain = (inverse)?1:0;
-			   // If reading an inverse map, then
-			   // the first element read is the 
-			   // codomain, and the second is the 
-			   // domain.
-
-			int index_codomain = 1 - index_domain;
-
-			map.put(data[index_domain].trim(), data[index_codomain].trim());
-			
-		}
-		
-		return map;
-	}
+//	private static Map<String, String> createMap(File mapfile, boolean inverse) {
+//		
+//		Map<String,String> map = new HashMap<String, String>();
+//		
+//		List<String> tmpMapRep = OneLineListReader.createOneLineListReaderForString().read(mapfile);
+//
+//		for (String string : tmpMapRep) {
+//			
+//			String[] data = string.split("\t");
+//			
+//			int index_domain = (inverse)?1:0;
+//			   // If reading an inverse map, then
+//			   // the first element read is the 
+//			   // codomain, and the second is the 
+//			   // domain.
+//
+//			int index_codomain = 1 - index_domain;
+//
+//			map.put(data[index_domain].trim(), data[index_codomain].trim());
+//			
+//		}
+//		
+//		return map;
+//	}
 	
 	/**
 	 * Replaces every ocurrence of a input key value with 
