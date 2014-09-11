@@ -20,7 +20,7 @@ public class MapByColumnValue extends ReturnValueParser<Pair<Integer,Map<String,
 		
 		m.matches();
 		
-		Integer index = Integer.valueOf(m.group("index"));
+		Integer index = Integer.valueOf(m.group("index"))-1;
 		
 		String inv = m.group("inverse");
 		Boolean inverse=(inv.equals("i"));
