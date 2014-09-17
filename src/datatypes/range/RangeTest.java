@@ -1,4 +1,4 @@
-package collections.rangemap.test;
+package datatypes.range;
 
 import static org.junit.Assert.*;
 
@@ -8,9 +8,6 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import collections.rangemap.Range;
-import pair.Pair;
 
 public class RangeTest  {
 
@@ -39,36 +36,64 @@ public class RangeTest  {
 		assertFalse(r2.inRange(4));
 		
 		
-		Comparator<Pair<Integer,Integer>> c = new Comparator<Pair<Integer,Integer>>() {
 
-			@Override
-			public int compare(Pair<Integer, Integer> o1,
-					Pair<Integer, Integer> o2) {
-				Integer p1 = o1.getFirst() + o1.getSecond();
-				Integer p2 = o2.getFirst() + o2.getSecond();
-				return p1.compareTo(p2);
-			}
-		};
-		
-		Range<Pair<Integer,Integer>> r3 = new Range<Pair<Integer,Integer>>(new Pair<Integer, Integer>(0, 1),new Pair<Integer, Integer>(3, 4), true, true,c);
-		Range<Pair<Integer,Integer>> r4 = new Range<Pair<Integer,Integer>>(new Pair<Integer, Integer>(0, 1),new Pair<Integer, Integer>(3, 4),false, false,c);
-		
-
-		
-		assertFalse(r3.inRange(new Pair<Integer, Integer>(0, 0))); 
-		assertTrue(r3.inRange(new Pair<Integer, Integer>(0, 1)));
-		assertTrue(r3.inRange(new Pair<Integer, Integer>(1, 2)));
-		assertTrue(r3.inRange(new Pair<Integer, Integer>(3, 4)));
-		assertFalse(r3.inRange(new Pair<Integer, Integer>(4, 4)));
-		
-		assertFalse(r4.inRange(new Pair<Integer, Integer>(0, 0))); 
-		assertFalse(r4.inRange(new Pair<Integer, Integer>(0, 1)));
-		assertTrue(r4.inRange(new Pair<Integer, Integer>(1, 2)));
-		assertFalse(r4.inRange(new Pair<Integer, Integer>(3, 4)));
-		assertFalse(r4.inRange(new Pair<Integer, Integer>(4, 4)));
 		
 	}
 	
+	@Test
+	public void testInRangeKWithComparatorK() {
+		
+		Comparator<Character> c = new Comparator<Character>() {
+
+			@Override
+			public int compare(Character c1,
+					Character c2) {
+				Character a = Character.toUpperCase(c1);
+				Character b = Character.toUpperCase(c2);
+				return a.compareTo(b);
+			}
+		};
+		
+		Range<Character> r3 = new Range<Character>('B','D', true, true);
+		Range<Character> r4 = new Range<Character>('e','f', true, true);;
+		
+
+		
+		assertFalse(r3.inRangeComparedWith('A', c)); 
+		assertTrue(r3.inRangeComparedWith('B', c)); 
+		assertTrue(r3.inRangeComparedWith('C', c)); 
+		assertTrue(r3.inRangeComparedWith('D', c)); 
+		assertFalse(r3.inRangeComparedWith('E', c));
+		assertFalse(r3.inRangeComparedWith('F', c)); 
+		assertFalse(r3.inRangeComparedWith('G', c)); 
+		
+		assertFalse(r3.inRangeComparedWith('a', c)); 
+		assertTrue(r3.inRangeComparedWith('b', c)); 
+		assertTrue(r3.inRangeComparedWith('c', c)); 
+		assertTrue(r3.inRangeComparedWith('d', c)); 
+		assertFalse(r3.inRangeComparedWith('e', c));
+		assertFalse(r3.inRangeComparedWith('f', c)); 
+		assertFalse(r3.inRangeComparedWith('g', c)); 
+		
+		assertFalse(r4.inRangeComparedWith('A', c)); 
+		assertFalse(r4.inRangeComparedWith('B', c)); 
+		assertFalse(r4.inRangeComparedWith('C', c)); 
+		assertFalse(r4.inRangeComparedWith('D', c)); 
+		assertTrue(r4.inRangeComparedWith('E', c));
+		assertTrue(r4.inRangeComparedWith('F', c)); 
+		assertFalse(r4.inRangeComparedWith('G', c));
+		
+		assertFalse(r4.inRangeComparedWith('a', c)); 
+		assertFalse(r4.inRangeComparedWith('b', c)); 
+		assertFalse(r4.inRangeComparedWith('c', c)); 
+		assertFalse(r4.inRangeComparedWith('d', c)); 
+		assertTrue(r4.inRangeComparedWith('e', c));
+		assertTrue(r4.inRangeComparedWith('f', c)); 
+		assertFalse(r4.inRangeComparedWith('g', c)); 
+		
+
+		
+	}
 	@Test
 	public void testEquals() {
 
@@ -175,7 +200,7 @@ public class RangeTest  {
 				int counter = 0;
 				for (Range<Integer> r : ranges.get(j)) {
 				
-					assertEquals(res[j][i][counter], testRanges.get(i).equals(r));
+					assertEquals(res[j][i][counter], testRanges.get(i).intersects(r));
 				
 					counter++;
 				
