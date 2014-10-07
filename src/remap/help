@@ -1,0 +1,17 @@
+MapCombiner.
+	 Combiner several mapsin the given order. The output result from one is used
+	 as input value of the next.
+	 
+	 
+Usage:
+  mapcombiner.jar <Options>  
+ 
+Options:
+  --maps            List of String. Each string correspond to a path for a file.
+  
+  --outfile         String. Path to output map.
+
+  --def             Default value used when a value is noy found in one map. 
+                    By default 'null' string is printed.
+  
+  --help            Shows this help.               

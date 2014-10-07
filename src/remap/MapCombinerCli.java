@@ -1,5 +1,7 @@
 package remap;
 
+import io.resources.ResourceContentAsString;
+
 import java.io.File;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.Map;
 
 import cmdGA2.CommandLine;
 import cmdGA2.MultipleArgumentOption;
+import cmdGA2.NoArgumentOption;
 import cmdGA2.OptionsFactory;
 import cmdGA2.SingleArgumentOption;
 import cmdGA2.returnvalues.InfileValue;
@@ -33,6 +36,7 @@ public class MapCombinerCli {
 		SingleArgumentOption<PrintStream> outOpt = OptionsFactory.createBasicPrintStreamArgument(cmd);
 		MultipleArgumentOption<File> inputMapOpt = new MultipleArgumentOption<File>(cmd, "--maps", ',', new ArrayList<File>(), new InfileValue());
 		SingleArgumentOption<String> defValueOpt = new SingleArgumentOption<String>(cmd, "--def", new StringValue(), null);
+		NoArgumentOption helpOpt = new NoArgumentOption(cmd, "--help");		
 		////////////////////////////////////////////////////////////////////////
 
 		////////////////////////////////////////////////////////////////////////
@@ -40,6 +44,15 @@ public class MapCombinerCli {
 		cmd.readAndExitOnError(args);
 		////////////////////////////////////////////////////////////////////////
 
+		////////////////////////////////////////////////////////////////////////
+		// check for help
+		if (helpOpt.isPresent()) {
+			String content = new ResourceContentAsString().readContents("help", MapCombinerCli.class);
+			System.err.println(content);
+			System.exit(1);
+		}
+		////////////////////////////////////////////////////////////////////////
+		
 		////////////////////////////////////////////////////////////////////////
 		// Get values from command line options
 		PrintStream out = outOpt.getValue();
