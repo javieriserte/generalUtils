@@ -71,17 +71,19 @@ public class RemoveComments {
 		try {
 
 			while((line = inb.readLine())!=null) {
-				
 				outb.write(line);
+
 				outb.newLine();
 			
 			}
 			
-		} catch (IOException e) {
-
-			e.printStackTrace();
-
-		}
+			outb.flush();
+			inb.close();
+			outb.close();
+			
+		} catch (IOException | NullPointerException e) {
+			
+		} 
 		
 	}
 
