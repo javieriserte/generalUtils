@@ -15,11 +15,7 @@ public class UncommenterBufferedReader extends BufferedReader {
 	@Override
 	public String readLine() throws IOException {
 		
-		String currentLine = null; 
-				
-		while ((currentLine = this.getNextLine()) != null);
-				
-		return currentLine;
+		return this.getNextLine();
 			
 	}
 	
