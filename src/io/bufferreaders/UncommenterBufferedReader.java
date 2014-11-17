@@ -1,21 +1,14 @@
 package io.bufferreaders;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Reader;
 
-import removecomments.RemoveComments;
-
 public class UncommenterBufferedReader extends BufferedReader {
 
-	private RemoveComments remover; 
-	
 	public UncommenterBufferedReader(Reader in) {
 		
 		super(in);
-		
-		remover = new RemoveComments();
 		
 	}
 
@@ -24,35 +17,44 @@ public class UncommenterBufferedReader extends BufferedReader {
 		
 		String currentLine = null; 
 				
-		while ((currentLine = this.getNextLine()) != null && currentLine.equals(""));
+		while ((currentLine = this.getNextLine()) != null);
 				
 		return currentLine;
 			
 	}
 	
 	
-	public String getNextLine() throws IOException {
+	private String getNextLine() throws IOException {
 		
-		String currentLine = super.readLine();
+		String currentLine = null; 
 		
-		if (currentLine!=null) {
-		
-			StringBuffer sb = new StringBuffer(currentLine);
-		
-			String result = remover.uncomment(new ByteArrayInputStream(sb.toString().getBytes()));
-		
-			return result.trim();
+		while ( (currentLine = super.readLine())!= null) {
 			
-		} else {
-			
-			return null;
-			
+			if (!this.skipThisLine(currentLine)) {
+				return currentLine;
+			}
+
 		}
 		
+		return null;
+
 	}
+
+	private boolean skipThisLine(String currentLine) {
+		
+		for (int i = 0; i< currentLine.length() ; i++) {
+			
+			char currentChar = currentLine.charAt(i);
+			
+			if ( currentChar==' ' || currentChar=='\t') {
+				continue;
+			}
+
+			return currentChar=='#';
+			
+		}
+		return false;
 	
-	
-	
-	
+	}
 
 }
