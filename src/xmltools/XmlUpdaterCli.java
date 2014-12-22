@@ -2,7 +2,6 @@ package xmltools;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,7 +22,6 @@ import cmdGA2.CommandLine;
 import cmdGA2.NoArgumentOption;
 import cmdGA2.SingleArgumentOption;
 import cmdGA2.returnvalues.InfileValue;
-import cmdGA2.returnvalues.PrintStreamValue;
 import cmdGA2.returnvalues.StringValue;
 
 public class XmlUpdaterCli {
@@ -39,7 +37,6 @@ public class XmlUpdaterCli {
 		// Add arguments
 		SingleArgumentOption<File> inOpt = new SingleArgumentOption<File>(cmd, 
 				"-file", new InfileValue(), null);
-		SingleArgumentOption<PrintStream> outOpt = new SingleArgumentOption<PrintStream>(cmd, "-out", new PrintStreamValue(), System.out);
 		NoArgumentOption abortOpt = new NoArgumentOption(cmd, "set_aborted");
 		SingleArgumentOption<String> statusKeyOpt = new SingleArgumentOption<String>(cmd, "-status_key", new StringValue(), null);
 		SingleArgumentOption<String> statusValueOpt = new SingleArgumentOption<String>(cmd, "-status_value", new StringValue(), null);
@@ -49,7 +46,6 @@ public class XmlUpdaterCli {
 		
 		try {
 		
-			PrintStream out = outOpt.getValue();
      		Document doc = getDocument(inOpt.getValue());
 			
      		if (abortOpt.isPresent()) {
@@ -75,7 +71,7 @@ public class XmlUpdaterCli {
 		    Transformer transformer = tFactory.newTransformer();
 
 		    DOMSource source = new DOMSource(doc);
-		    StreamResult result = new StreamResult(out);
+		    StreamResult result = new StreamResult( inOpt.getValue() );
 		    transformer.transform(source, result);
 			
 		} catch (ParserConfigurationException | SAXException | IOException e) {
