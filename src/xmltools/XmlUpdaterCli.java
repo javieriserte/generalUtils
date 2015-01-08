@@ -37,12 +37,25 @@ public class XmlUpdaterCli {
 		// Add arguments
 		SingleArgumentOption<File> inOpt = new SingleArgumentOption<File>(cmd, 
 				"-file", new InfileValue(), null);
-		NoArgumentOption abortOpt = new NoArgumentOption(cmd, "set_aborted");
+		NoArgumentOption abortOpt = new NoArgumentOption(cmd, "-set_aborted");
 		SingleArgumentOption<String> statusKeyOpt = new SingleArgumentOption<String>(cmd, "-status_key", new StringValue(), null);
 		SingleArgumentOption<String> statusValueOpt = new SingleArgumentOption<String>(cmd, "-status_value", new StringValue(), null);
+		NoArgumentOption helpOpt = new NoArgumentOption(cmd,"-help");
 		////////////////////////////////////////////////////////////////////////
 		
 		cmd.readAndExitOnError(args);
+		
+		if (helpOpt.isPresent()) {
+			
+			String msg = "Options: \n" +
+			             "  -file :         Input xml file.\n" + 
+					     "  -set_aborted  : Turn yes the abort tag in xml file\n"+
+			             "  -status_key   : Key of a tag in the status tag\n" + 
+			             "  -status_value : Value of a tag in the status tag\n";
+			System.out.println(msg);
+			System.exit(0);
+			
+		}
 		
 		try {
 		
@@ -55,9 +68,14 @@ public class XmlUpdaterCli {
      			String key = statusKeyOpt.getValue();
      			String value = statusValueOpt.getValue();
      			NodeList nl = doc.getElementsByTagName("status");
+     			if (nl.getLength()<=0) {
+     				Element e = doc.createElement("status");
+     			    doc.getFirstChild().appendChild(e);
+     				nl = doc.getElementsByTagName("status");
+     			}
      			int keyIsPresent = checkIfPresentKey(key, nl);
      			
-     			if (keyIsPresent>0) {
+     			if (keyIsPresent>=0) {
    					nl.item(0).getChildNodes().item(keyIsPresent)
    					  .setTextContent(value);
    				} else {
@@ -91,7 +109,7 @@ public class XmlUpdaterCli {
 					return i;
 				}; 
 		}
-		return 0;
+		return -1;
 	}
 
 	private static Document getDocument(File in) 
