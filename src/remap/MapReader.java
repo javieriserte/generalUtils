@@ -22,22 +22,18 @@ public class MapReader {
 		
 		Map<String,String> map = new HashMap<String, String>();
 		
-		List<String> tmpMapRep = OneLineListReader.createOneLineListReaderForString().read(mapfile);
+		List<String> tmpMapRep = OneLineListReader
+		    .createOneLineListReaderForString().read(mapfile);
 
 		for (String string : tmpMapRep) {
-			
-			String[] data = string.split("\t");
-			
+			String[] data = string.split("\\s");
 			int index_domain = (inverse)?1:0;
 			   // If reading an inverse map, then
 			   // the first element read is the 
 			   // codomain, and the second is the 
 			   // domain.
-
 			int index_codomain = 1 - index_domain;
-
 			map.put(data[index_domain].trim(), data[index_codomain].trim());
-			
 		}
 		
 		return map;
