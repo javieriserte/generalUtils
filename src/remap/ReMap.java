@@ -19,7 +19,7 @@ import cmdGA2.returnvalues.InfileValue;
 
 /**
  * Reads a dictionary from a file 
- * and replaces ocurrences in a input file with the
+ * and replaces occurrences in a input file with the
  * dictionary.
  * 
  */
@@ -45,6 +45,7 @@ public class ReMap {
 		NoArgumentOption invOpt = new NoArgumentOption(cmdline, "-inverse");
 		SingleArgumentOption<String> defOpt =
 		    OptionsFactory.createBasicStringArgument(cmdline, "-def", null);
+		NoArgumentOption keyOpt = new NoArgumentOption(cmdline, "-keys");
 		// Parse command line
 		cmdline.readAndExitOnError(args);
     ////////////////////////////////////////////////////////////////////////////
@@ -65,6 +66,7 @@ public class ReMap {
 		File mapfile = (File) mapOpt.getValue();
 		boolean inverse = invOpt.isPresent();
 		String defaultValue = defOpt.getValue();
+		boolean includeKeys = keyOpt.isPresent();
     ////////////////////////////////////////////////////////////////////////////
 		
     ////////////////////////////////////////////////////////////////////////////
@@ -91,7 +93,7 @@ public class ReMap {
     ////////////////////////////////////////////////////////////////////////////
 		// Substitute values with the 
 		// dictionary map
-		performReplacement(out, values, map, defaultValue);
+		performReplacement(out, values, map, defaultValue,includeKeys);
     ////////////////////////////////////////////////////////////////////////////
 
 	}
@@ -99,7 +101,7 @@ public class ReMap {
   //////////////////////////////////////////////////////////////////////////////
 	// Private methods
 	/**
-	 * Replaces every ocurrence of a input key value with 
+	 * Replaces every occurrence of a input key value with 
 	 * the mapped value if it is found in the dictionary map.
 	 * Prints the results in a given PrintStream. 
 	 * If the value is not found nothing is printed.
@@ -109,14 +111,15 @@ public class ReMap {
 	 * @param map a key-value dictionary. 
 	 */
 	private static void performReplacement(PrintStream out, List<String> values, 
-	    Map<String, String> map, String defaultValue) {
+	    Map<String, String> map, String defaultValue, boolean includeKeys) {
 		
 		for (String string : values) {
 			string = string.trim();
+			String lineHeader =includeKeys ? string + "\t" :"";
 			if (map.containsKey(string)) {
-				out.println(map.get(string));
+				out.println(lineHeader + map.get(string));
 			} else if (defaultValue!=null) {
-				out.println(defaultValue);
+				out.println(lineHeader + defaultValue);
 			}
 		}
 		
