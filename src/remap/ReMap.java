@@ -114,8 +114,7 @@ public class ReMap {
 	    Map<String, String> map, String defaultValue, boolean includeKeys) {
 		
 		for (String string : values) {
-			string = string.trim();
-			String lineHeader =includeKeys ? string + "\t" :"";
+			String lineHeader =includeKeys ? string.trim() + "\t" :"";
 			if (map.containsKey(string)) {
 				out.println(lineHeader + map.get(string));
 			} else if (defaultValue!=null) {
