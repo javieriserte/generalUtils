@@ -26,14 +26,16 @@ public class MapReader {
 		    .createOneLineListReaderForString().read(mapfile);
 
 		for (String string : tmpMapRep) {
-			String[] data = string.split("\\s");
-			int index_domain = (inverse)?1:0;
+		  if (! string.isEmpty()) {
+			  String[] data = string.split("\\s");
+			  int index_domain = (inverse)?1:0;
 			   // If reading an inverse map, then
 			   // the first element read is the 
 			   // codomain, and the second is the 
 			   // domain.
-			int index_codomain = 1 - index_domain;
-			map.put(data[index_domain].trim(), data[index_codomain].trim());
+			  int index_codomain = 1 - index_domain;
+			  map.put(data[index_domain].trim(), data[index_codomain].trim());
+		  }
 		}
 		
 		return map;

@@ -8,11 +8,11 @@ import java.util.regex.Pattern;
 import pair.Pair;
 import cmdGA2.returnvalues.ReturnValueParser;
 
-public class MapByColumnValue extends ReturnValueParser<Pair<Integer,Map<String,String>>> {
+public class MapByColumnValue extends ReturnValueParser<Pair<Integer, Pair<String, Map<String, String>>>> {
 
-	private static final String FORMAT_REGEX= "^(?<index>[0-9]+)(?<inverse>i*):(?<fileName>.+)$";
+	private static final String FORMAT_REGEX= "^(?<index>[0-9]+)(?<inverse>i*)(?<default>:.+)*:(?<fileName>.+)$";
 	@Override
-	public Pair<Integer, Map<String, String>> parse(String token) {
+	public Pair<Integer, Pair<String, Map<String, String>>> parse(String token) {
 		
 		Pattern p = Pattern.compile(FORMAT_REGEX);
 		
@@ -25,12 +25,19 @@ public class MapByColumnValue extends ReturnValueParser<Pair<Integer,Map<String,
 		String inv = m.group("inverse");
 		Boolean inverse=(inv.equals("i"));
 		
+		String def = m.group("default");
+		if (!(def==null) && !def.isEmpty()) {
+		  def = def.substring(1);
+		} else {
+		  def = "-";
+		}
+		
 		File file = new File(m.group("fileName"));
 		
 		Map<String,String> map = (new MapReader()).createMap(file, inverse);
 		
-		return new Pair<Integer,Map<String,String>>(index,map);
-		
+		return new Pair<Integer,Pair<String,Map<String,String>>>(index,new Pair<String,Map<String,String>>(def, map));
+//		
 	}
 
 }

@@ -30,7 +30,7 @@ public class MapTableCli {
 		// Add Options to the command line
 		SingleArgumentOption<InputStream> inOpt = OptionsFactory.createBasicInputStreamArgument(cmd);
 		SingleArgumentOption<PrintStream> outOpt = OptionsFactory.createBasicPrintStreamArgument(cmd);
-		MultipleArgumentOption<Pair<Integer,Map<String,String>>> inputMapOpt = new MultipleArgumentOption<Pair<Integer,Map<String,String>>>(cmd, "--maps", ',', new ArrayList<Pair<Integer,Map<String,String>>>(), new MapByColumnValue());
+		MultipleArgumentOption<Pair<Integer,Pair<String,Map<String,String>>>> inputMapOpt = new MultipleArgumentOption<Pair<Integer,Pair<String,Map<String,String>>>>(cmd, "--maps", ',', new ArrayList<Pair<Integer,Pair<String,Map<String,String>>>>(), new MapByColumnValue());
 		////////////////////////////////////////////////////////////////////////
 
 		////////////////////////////////////////////////////////////////////////
@@ -42,7 +42,7 @@ public class MapTableCli {
 		// Get values from command line options
 		BufferedReader in = new BufferedReader(new InputStreamReader(inOpt.getValue()));
 		PrintStream out = outOpt.getValue();
-		List<Pair<Integer,Map<String,String>>> mapColumnPairs = inputMapOpt.getValues();
+		List<Pair<Integer, Pair<String, Map<String, String>>>> mapColumnPairs = inputMapOpt.getValues();
 		////////////////////////////////////////////////////////////////////////
 		
 		////////////////////////////////////////////////////////////////////////

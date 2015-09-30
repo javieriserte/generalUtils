@@ -21,23 +21,23 @@ public class MapByColumnValueTest extends MapByColumnValue {
 		
 		MapByColumnValue a = new MapByColumnValue(); 
 		
-		Pair<Integer, Map<String, String>> p1 = a.parse(s1);
-		Pair<Integer, Map<String, String>> p2 = a.parse(s2);
-		Pair<Integer, Map<String, String>> p3 = a.parse(s3);
+		Pair<Integer, Pair<String, Map<String, String>>> p1 = a.parse(s1);
+		Pair<Integer, Pair<String, Map<String, String>>> p2 = a.parse(s2);
+		Pair<Integer, Pair<String, Map<String, String>>> p3 = a.parse(s3);
 		
 		assertEquals((int)p1.getFirst(),(int)1);
 		assertEquals((int)p2.getFirst(),(int)2d);
 		assertEquals((int)p3.getFirst(),(int)33d);
 
-		assertTrue(p1.getSecond().keySet().contains("A"));
-		assertTrue(p1.getSecond().keySet().contains("B"));
-		assertTrue(p1.getSecond().keySet().contains("C"));
-		assertFalse(p1.getSecond().keySet().contains("D"));
+		assertTrue(p1.getSecond().getSecond().keySet().contains("A"));
+		assertTrue(p1.getSecond().getSecond().keySet().contains("B"));
+		assertTrue(p1.getSecond().getSecond().keySet().contains("C"));
+		assertFalse(p1.getSecond().getSecond().keySet().contains("D"));
 		
-		assertFalse(p2.getSecond().keySet().contains("A"));
-		assertTrue(p2.getSecond().keySet().contains("1"));
-		assertTrue(p2.getSecond().keySet().contains("2"));
-		assertTrue(p2.getSecond().keySet().contains("3"));
+		assertFalse(p2.getSecond().getSecond().keySet().contains("A"));
+		assertTrue(p2.getSecond().getSecond().keySet().contains("1"));
+		assertTrue(p2.getSecond().getSecond().keySet().contains("2"));
+		assertTrue(p2.getSecond().getSecond().keySet().contains("3"));
 
 
 		
