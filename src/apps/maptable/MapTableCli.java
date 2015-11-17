@@ -1,7 +1,8 @@
-package remap;
+package apps.maptable;
 
 import io.onelinelister.LineParserIntoFields;
 import io.onelinelister.OneLineListReader;
+import io.resources.ResourceContentAsString;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,8 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 import pair.Pair;
+import remap.MapByColumnValue;
+import remap.MapTable;
 import cmdGA2.CommandLine;
 import cmdGA2.MultipleArgumentOption;
+import cmdGA2.NoArgumentOption;
 import cmdGA2.OptionsFactory;
 import cmdGA2.SingleArgumentOption;
 
@@ -28,9 +32,16 @@ public class MapTableCli {
 		
 		////////////////////////////////////////////////////////////////////////
 		// Add Options to the command line
-		SingleArgumentOption<InputStream> inOpt = OptionsFactory.createBasicInputStreamArgument(cmd);
-		SingleArgumentOption<PrintStream> outOpt = OptionsFactory.createBasicPrintStreamArgument(cmd);
-		MultipleArgumentOption<Pair<Integer,Pair<String,Map<String,String>>>> inputMapOpt = new MultipleArgumentOption<Pair<Integer,Pair<String,Map<String,String>>>>(cmd, "--maps", ',', new ArrayList<Pair<Integer,Pair<String,Map<String,String>>>>(), new MapByColumnValue());
+		SingleArgumentOption<InputStream> inOpt = 
+		    OptionsFactory.createBasicInputStreamArgument(cmd);
+		SingleArgumentOption<PrintStream> outOpt = 
+		    OptionsFactory.createBasicPrintStreamArgument(cmd);
+		MultipleArgumentOption<Pair<Integer,Pair<String,Map<String,String>>>> 
+		    inputMapOpt = new MultipleArgumentOption<Pair<Integer,Pair
+		    <String,Map<String,String>>>>(cmd, "--maps", ',', 
+		        new ArrayList<Pair<Integer,Pair<String,Map<String,String>>>>(), 
+		        new MapByColumnValue());
+		NoArgumentOption helpOpt = new NoArgumentOption(cmd, "--help");
 		////////////////////////////////////////////////////////////////////////
 
 		////////////////////////////////////////////////////////////////////////
@@ -38,6 +49,16 @@ public class MapTableCli {
 		cmd.readAndExitOnError(args);
 		////////////////////////////////////////////////////////////////////////
 
+    ////////////////////////////////////////////////////////////////////////
+    // Check for help
+		if (helpOpt.isPresent()) {
+		  String helpText = new ResourceContentAsString().readContents("help", 
+		      MapTableCli.class);
+		  System.out.println(helpText);
+		  System.exit(0);
+		}
+    ////////////////////////////////////////////////////////////////////////
+		
 		////////////////////////////////////////////////////////////////////////
 		// Get values from command line options
 		BufferedReader in = new BufferedReader(new InputStreamReader(inOpt.getValue()));

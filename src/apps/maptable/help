@@ -1,0 +1,25 @@
+MapTable
+  Replaces one or more columns in a text file with values from mapping files.
+	 
+Usage:
+  maptabler.jar <Options>  
+ 
+Options:
+  --infile          Input text file in columns. If none is provided, text is 
+                    taken from std input.
+  
+  --maps            List of String. Each string correspond to a path for a 
+                    replacement file. The format of each map file is:
+                     ni:d:filename
+                    where n is the index to the column to perform the 
+                    replacemente with this map, i indicates if the map is given
+                    in a inverse way (codomain - domain), d is the default value
+                    used when an input value do not belongs to the mapped 
+                    elements, and filename is the path to the file with the map.
+                    The format of the map file is one mapped element by line,
+                    each line has a format:
+                    domain<SPACE> or <TAB>codomain
+  
+  --outfile         String. Path to output file.
+  
+  --help            Shows this help.               

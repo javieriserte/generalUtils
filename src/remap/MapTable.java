@@ -8,7 +8,7 @@ import pair.Pair;
 
 public class MapTable {
 
-	List<List<String>> map (List<List<String>> data, List<Pair<Integer, Pair<String, Map<String, String>>>> mapColumnPairs) {
+	public List<List<String>> map (List<List<String>> data, List<Pair<Integer, Pair<String, Map<String, String>>>> mapColumnPairs) {
 		
 		List<Integer> columnIndexes = new ArrayList<Integer>();
 		
