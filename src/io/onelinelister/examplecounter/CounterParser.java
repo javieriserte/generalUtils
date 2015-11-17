@@ -1,6 +1,6 @@
-package io.onelinelister;
+package io.onelinelister.examplecounter;
 
-import io.onelinelister.OneLineListReader.LineParser;
+import io.onelinelister.LineParser;
 
 public class CounterParser implements LineParser<Integer> {
 

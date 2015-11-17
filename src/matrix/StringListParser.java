@@ -3,7 +3,7 @@ package matrix;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.onelinelister.OneLineListReader;
+import io.onelinelister.LineParser;;
 
 /**
  * Parses a string into a list of strings.
@@ -12,8 +12,7 @@ import io.onelinelister.OneLineListReader;
  * @author javier
  *
  */
-public class StringListParser implements
-		OneLineListReader.LineParser<List<String>> {
+public class StringListParser implements LineParser<List<String>> {
 	@Override
 	public List<String> parse(String line) {
 		String[] strings = line.split("\t");

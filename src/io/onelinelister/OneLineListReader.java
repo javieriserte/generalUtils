@@ -9,12 +9,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
+import io.onelinelister.lineparsers.*;
 /**
  * Reads input data that is conformed by one value per line, and returns 
  * a list of values.
  * 
- * TODO Create a similar class that extends from BufferedReader
  * @author javier
  *
  */
@@ -95,47 +94,6 @@ public class OneLineListReader<T> {
 		
 	}
 
-	////////////////////////////////
-	// Auxiliary Classes
-	public interface LineParser<T> {
-		
-		public T parse(String line);
-		
-	}
-	
-	public static class IntegerLineParser implements LineParser<Integer>{
-
-		@Override
-		public Integer parse(String line) {
-			
-			return Integer.valueOf(line);
-			
-		}
-		
-	}
-	
-	public static class DoubleLineParser implements LineParser<Double>{
-
-		@Override
-		public Double parse(String line) {
-			
-			return Double.valueOf(line);
-			
-		}
-		
-	}
-	
-	public static class StringLineParser implements LineParser<String> {
-
-		@Override
-		public String parse(String line) {
-			return line;
-		}
-		
-		
-	}
-	
-	
 	/////////////////////////////////
 	// Factory Methods
 	public static OneLineListReader<String> createOneLineListReaderForString() {

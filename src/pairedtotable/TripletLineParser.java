@@ -3,7 +3,7 @@ package pairedtotable;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.onelinelister.OneLineListReader.LineParser;
+import io.onelinelister.LineParser;
 
 public class TripletLineParser implements LineParser<List<String>> {
 

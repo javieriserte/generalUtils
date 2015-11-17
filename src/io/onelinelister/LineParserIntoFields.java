@@ -1,6 +1,6 @@
 package io.onelinelister;
 
-import io.onelinelister.OneLineListReader.LineParser;
+import io.onelinelister.LineParser;
 
 import java.util.ArrayList;
 import java.util.List;

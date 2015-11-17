@@ -3,6 +3,8 @@ package io.bufferreaders;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UncommenterBufferedReader extends BufferedReader {
 
@@ -15,41 +17,27 @@ public class UncommenterBufferedReader extends BufferedReader {
 	@Override
 	public String readLine() throws IOException {
 		
-		return this.getNextLine();
-			
-	}
-	
-	
-	private String getNextLine() throws IOException {
-		
-		String currentLine = null; 
-		
-		while ( (currentLine = super.readLine())!= null) {
-			
-			if (!this.skipThisLine(currentLine)) {
-				return currentLine;
-			}
+    String currentLine = null; 
+    
+    while ( (currentLine = super.readLine())!= null) {
+      
+      if (!this.skipThisLine(currentLine)) {
+        return currentLine;
+      }
 
-		}
-		
-		return null;
+    }
+    
+    return null;
 
 	}
 
 	private boolean skipThisLine(String currentLine) {
-		
-		for (int i = 0; i< currentLine.length() ; i++) {
-			
-			char currentChar = currentLine.charAt(i);
-			
-			if ( currentChar==' ' || currentChar=='\t') {
-				continue;
-			}
-
-			return currentChar=='#';
-			
-		}
-		return false;
+	  
+	  Pattern pattern = Pattern.compile("^\\s+#");
+	  
+	  Matcher matcher = pattern.matcher(currentLine);
+	  
+	  return matcher.matches();
 	
 	}
 

@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import io.onelinelister.OneLineListReader;
-import io.onelinelister.OneLineListReader.LineParser;
+import io.onelinelister.LineParser;
 
 /**
  * Sort text line in a given input text data according to the numeric value of

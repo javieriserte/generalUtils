@@ -1,8 +1,8 @@
 package math.confusionmatrix;
 
 import io.onelinelister.OneLineListReader;
-import io.onelinelister.OneLineListReader.LineParser;
-import io.onelinelister.OneLineListReader.StringLineParser;
+import io.onelinelister.LineParser;
+import io.onelinelister.lineparsers.StringLineParser;
 
 import java.io.File;
 import java.io.PrintStream;

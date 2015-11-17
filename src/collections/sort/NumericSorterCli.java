@@ -1,7 +1,7 @@
 package collections.sort;
 
 import io.onelinelister.LineParserIntoFields;
-import io.onelinelister.OneLineListReader.LineParser;
+import io.onelinelister.LineParser;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
