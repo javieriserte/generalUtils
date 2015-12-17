@@ -33,7 +33,7 @@ public class UncommenterBufferedReader extends BufferedReader {
 
 	private boolean skipThisLine(String currentLine) {
 	  
-	  Pattern pattern = Pattern.compile("^\\s+#");
+	  Pattern pattern = Pattern.compile("^\\s*#");
 	  
 	  Matcher matcher = pattern.matcher(currentLine);
 	  
